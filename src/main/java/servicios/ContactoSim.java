@@ -8,17 +8,28 @@ import modelo.Punto;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-
+/**
+ * Implementación del servicio de comunicación con la simulación.
+ * Utiliza los clientes de la API (SolicitudApi y ResultadosApi) para enviar 
+ * peticiones y procesar respuestas.
+ */
 @Service
 public class ContactoSim implements InterfazContactoSim {
     private final utilidades.api.SolicitudApi solicitudApi;
     private final utilidades.api.ResultadosApi resultadosApi;
-
+    /**
+     * Constructor que inyecta los clientes generados por OpenAPI.
+     * * @param solicitudApi Cliente de la API para manejar solicitudes.
+     * @param resultadosApi Cliente de la API para descargar resultados.
+     */
     public ContactoSim(utilidades.api.SolicitudApi solicitudApi, utilidades.api.ResultadosApi resultadosApi) {
         this.solicitudApi = solicitudApi;
         this.resultadosApi = resultadosApi;
     }
-
+    /**
+     * {@inheritDoc}
+     * Mapea internamente los modelos locales a los modelos generados por OpenAPI antes de hacer la petición HTTP.
+     */
     @Override
     public int solicitarSimulation(DatosSolicitud sol, String usuario) {
         try {
