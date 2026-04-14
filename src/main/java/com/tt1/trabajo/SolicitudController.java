@@ -1,5 +1,6 @@
 package com.tt1.trabajo;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,13 +29,22 @@ public class SolicitudController {
 	}
 
     @GetMapping("/solicitud")
-    public String solicitud(Model model) {
+    public String solicitud(Model model, HttpSession session) {
+        if (session.getAttribute("username") == null) {
+            return "redirect:/";
+        }
         model.addAttribute("entities", ics.getEntities());
         return "solicitud";
     }
     
     @PostMapping("/solicitud")
-    public String handleSolicitud(@RequestParam Map<String, String> formData, Model model) {
+    public String handleSolicitud(@RequestParam Map<String, String> formData, Model model, HttpSession session) {
+
+        String username = (String) session.getAttribute("username");
+        if (username == null) {
+            return "redirect:/";
+        }
+
     	Map<Integer, Integer> validData = new HashMap<>();
         List<String> errors = new ArrayList<>();
 
@@ -60,7 +70,7 @@ public class SolicitudController {
         } else {
         	logger.info("Atendida petición");
         	DatosSolicitud ds = new DatosSolicitud(validData);
-        	int tok = ics.solicitarSimulation(ds);
+        	int tok = ics.solicitarSimulation(ds, username);
         	if(tok != -1) {
         		model.addAttribute("token", tok);
         	} else {

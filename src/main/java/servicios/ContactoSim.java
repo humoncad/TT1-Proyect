@@ -20,7 +20,7 @@ public class ContactoSim implements InterfazContactoSim {
     }
 
     @Override
-    public int solicitarSimulation(DatosSolicitud sol) {
+    public int solicitarSimulation(DatosSolicitud sol, String usuario) {
         try {
             utilidades.model.Solicitud apiSolicitud = new utilidades.model.Solicitud();
             List<Integer> cantidades = new ArrayList<>();
@@ -40,7 +40,7 @@ public class ContactoSim implements InterfazContactoSim {
             apiSolicitud.setCantidadesIniciales(cantidades);
             apiSolicitud.setNombreEntidades(nombres);
 
-            utilidades.model.SolicitudResponse response = solicitudApi.solicitudSolicitarPost("usuario", apiSolicitud);
+            utilidades.model.SolicitudResponse response = solicitudApi.solicitudSolicitarPost(usuario, apiSolicitud);
             return (response != null) ? response.getTokenSolicitud() : -1;
         } catch (Exception e) {
             return -1;

@@ -40,6 +40,7 @@
 			const slider = document.getElementById("mySlider");
 
 			slider.addEventListener("input", function() {
+				document.getElementById("sliderValue").textContent = slider.value;
 		    	for(var y = 0; y < count; y++){
 					for(var x = 0; x < count; x++){
 						var node = document.getElementById(y+'-'+x);

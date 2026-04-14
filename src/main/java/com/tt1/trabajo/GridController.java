@@ -1,5 +1,6 @@
 package com.tt1.trabajo;
 
+import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 
 import interfaces.InterfazContactoSim;
@@ -33,7 +34,12 @@ public class GridController {
 	}
 	
 	@GetMapping("/grid")
-    public String solicitud(@RequestParam int tok, Model model) {
+    public String solicitud(@RequestParam int tok, Model model, HttpSession session) {
+
+		if (session.getAttribute("username") == null) {
+			return "redirect:/";
+		}
+
 		DatosSimulation ds = ics.descargarDatos(tok);
         model.addAttribute("count", ds.getAnchoTablero());
         model.addAttribute("maxTime", ds.getMaxSegundos());
